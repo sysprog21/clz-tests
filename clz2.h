@@ -4,6 +4,6 @@
 #include <stdint.h>
 
 static inline __attribute((always_inline))
-unsigned clz2(uint32_t x,int c);
+unsigned clz2(uint32_t x, int c);
 
 #endif

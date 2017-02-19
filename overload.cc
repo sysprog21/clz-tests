@@ -21,15 +21,7 @@ unsigned clz(uint16_t x)
 
 unsigned clz(uint8_t x)
 {
-    /*
-	if(x == 0) return 8;
-    int n =1;
-    if ((x >> 4) == 0) { n += 4; x <<= 4; }
-    if ((x >> 6) == 0) { n += 2; x <<= 2; }
-    n = n - (x >> 31);
-    return n;
-    */
-	uint8_t upper = uint8_t(x >> 4);
+    uint8_t upper = uint8_t(x >> 4);
     uint8_t lower = uint8_t(x & 0xF);
     return upper ? magic[upper] : 8 + magic[lower];
 }

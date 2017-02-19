@@ -1,8 +1,8 @@
 #include "clz.h"
 
-
 static inline __attribute((always_inline))
-unsigned clz(uint32_t x) {
+unsigned clz(uint32_t x)
+{
     if (x == 0) return 32;
     int n = 0;
     if (x <= 0x0000FFFF) { n += 16; x <<= 16; }

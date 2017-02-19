@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(){
-	FILE *fptr = fopen("iteration.txt","r");
-	FILE *output = fopen("output.txt","w");
-	if (!fp) {
+int main()
+{
+    FILE *fptr = fopen("iteration.txt","r");
+    FILE *output = fopen("output.txt","w");
+    if (!fp) {
         printf("ERROR opening input file iteration.txt\n");
         exit(0);
     }   
@@ -23,5 +24,6 @@ int main(){
     }
     fclose(fp);
 
+    return 0;
 }
 
