@@ -3,18 +3,18 @@
 
 int main()
 {
-    FILE *fptr = fopen("iteration.txt","r");
-    FILE *output = fopen("output.txt","w");
+    FILE *fp = fopen("iteration.txt","r");
+    // FILE *output = fopen("output.txt","w");
     if (!fp) {
         printf("ERROR opening input file iteration.txt\n");
         exit(0);
-    }   
+    }
     int i = 0;
     char append[50], find[50];
     double orig_sum_a = 0.0, orig_sum_f = 0.0, orig_a, orig_f;
     for (i = 0; i < 100; i++) {
         if (feof(fp)) {
-            printf("ERROR: You need 100 datum instead of %d\n", i); 
+            printf("ERROR: You need 100 datum instead of %d\n", i);
             printf("run 'make run' longer to get enough information\n\n");
             exit(0);
         }
@@ -26,4 +26,3 @@ int main()
 
     return 0;
 }
-
