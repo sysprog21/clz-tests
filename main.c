@@ -16,27 +16,27 @@
 #include "clz.h"
 #endif
 
-static inline __attribute__((always_inline)) 
+static inline __attribute__((always_inline))
 void get_cycles(unsigned *high, unsigned *low)
 {
-    asm volatile ("CPUID\n\t" 
+    asm volatile ("CPUID\n\t"
                   "RDTSC\n\t"
                   "mov %%edx, %0\n\t"
                   "movl %%eax, %1\n\t": "=r" (*high), "=r" (*low)::"%rax","%rbx","%rcx","%rdx"
-    );	
+                 );
 }
 
-static inline __attribute__((always_inline)) 
+static inline __attribute__((always_inline))
 void get_cycles_end(unsigned *high, unsigned *low)
 {
     asm volatile("RDTSCP\n\t"
                  "mov %%edx, %0\n\t"
                  "mov %%eax, %1\n\t"
                  "CPUID\n\t": "=r" (*high), "=r" (*low)::"%rax","%rbx","%rcx","%rdx"
-    );
+                );
 }
 
-static inline __attribute__((always_inline)) 
+static inline __attribute__((always_inline))
 uint64_t diff_in_cycles(unsigned high1, unsigned low1,
                         unsigned high2, unsigned low2)
 {
@@ -62,24 +62,25 @@ double diff_in_second(struct timespec t1, struct timespec t2)
 
 int main(int argc, char *argv[])
 {
-    FILE *output;
+    FILE *output = NULL;
     uint64_t timec, time_all = 0;
     unsigned timec_high1, timec_low1, timec_high2, timec_low2;
 
 #if defined(correct)
+
     for (int try = 0; try < 20; try++) {
-        timec = 0;
-        get_cycles(&timec_high1, &timec_low1);
-	for (uint32_t i = 0; i < 32;i++) {
-            printf("%u:%d \n",1<<i,clz(1<<i));
-            for (uint32_t j = (1 << i); j < (1 << (i + 1)); j++) {
-                assert( __builtin_clz (j) == clz(j));
-            }
-        }	
-        get_cycles_end(&timec_high2, &timec_low2);
-        timec = diff_in_cycles(timec_high1, timec_low1, timec_high2, timec_low2);	
-        printf("executiom time : %lu cycles\n", timec);
-    }
+                    timec = 0;
+                    get_cycles(&timec_high1, &timec_low1);
+                    for (uint32_t i = 0; i < 31; i++) {
+                        printf("%u:%d \n",1<<i,clz(1<<i));
+                        for (uint32_t j = (1 << i); j < (1 << (i + 1)); j++) {
+                            assert( __builtin_clz (j) == clz(j));
+                        }
+                    }
+                    get_cycles_end(&timec_high2, &timec_low2);
+                    timec = diff_in_cycles(timec_high1, timec_low1, timec_high2, timec_low2);
+                    printf("executiom time : %lu cycles\n", timec);
+                }
 
 #else
     assert(argv[1] && argv[2] && "insert argument");
@@ -98,14 +99,14 @@ int main(int argc, char *argv[])
     output = fopen("harley.txt","a");
 #elif defined(overload)
     output = fopen("overload.txt","a");
-#endif	
+#endif
     uint64_t timecall;
     for (uint32_t i = min; i < max; i++) {
         timecall = 0;
 #ifdef MP
-#pragma omp parallel for
+        #pragma omp parallel for
 #endif
-	for (uint32_t j = 0; j < 100; j++) {
+        for (uint32_t j = 0; j < 100; j++) {
             get_cycles(&timec_high1, &timec_low1);
             clz(i);
             get_cycles_end(&timec_high2, &timec_low2);
