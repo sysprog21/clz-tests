@@ -6,6 +6,7 @@ endif
 ifeq ($(strip $(MP)),1)
 CFLAGS_common += -fopenmp -DMP
 endif
+
 EXEC = \
 	iteration.o \
 	binary.o \
