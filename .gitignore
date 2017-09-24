@@ -4,4 +4,4 @@ harley
 iteration
 recursive
 *.o
-*.o.d
+.*.d

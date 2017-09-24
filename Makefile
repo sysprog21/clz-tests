@@ -8,11 +8,13 @@ CFLAGS_common += -fopenmp -DMP
 endif
 
 EXEC = \
-	iteration.o \
-	binary.o \
-	byte.o \
-	recursive.o \
-	harley.o 
+	iteration \
+	binary \
+	byte \
+	recursive \
+	harley
+
+deps := $(EXEC:%=.%.o.d)
 
 GIT_HOOKS := .git/hooks/pre-commit
 .PHONY: all
@@ -24,8 +26,10 @@ $(GIT_HOOKS):
 
 SRCS_common = main.c
 
-%.o: $(SRCS_common) %.c clz.h
-	$(CC) $(CFLAGS_common) -o $@ -D$(shell echo $(subst .o,,$@)) $(SRCS_common)
+%: $(SRCS_common) %.c clz.h
+	$(CC) $(CFLAGS_common) -o $@ \
+		-MMD -MF .$@.d \
+		-D$(shell echo $(subst .o,,$@)) $(SRCS_common)
 
 run: $(EXEC)
 	for method in $(EXEC); do\
@@ -37,4 +41,6 @@ plot: iteration.txt iteration.txt binary.txt byte.txt harley.txt
 
 .PHONY: clean
 clean:
-	$(RM) $(EXEC) *.o *.txt *.png
+	$(RM) $(EXEC) *.o $(deps) *.txt *.png
+
+-include $(deps)
