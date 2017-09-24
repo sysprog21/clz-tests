@@ -4,7 +4,6 @@
 int main()
 {
     FILE *fp = fopen("iteration.txt","r");
-    // FILE *output = fopen("output.txt","w");
     if (!fp) {
         printf("ERROR opening input file iteration.txt\n");
         exit(0);
