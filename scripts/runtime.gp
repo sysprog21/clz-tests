@@ -1,7 +1,7 @@
 reset
 set xlabel 'numerical distribution'
 set ylabel 'time(cycles)'
-set title 'perfomance comparison'
+set title 'performance comparison'
 set term png enhanced font 'Verdana,10'
 set output 'runtime.png'
 set format x "%10.0f"
